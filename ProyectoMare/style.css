@@ -1,0 +1,920 @@
+/* --- Variables de Color --- */
+:root {
+    --rojo-paisa: #ae2727f6;
+    --amarillo-paisa: #f1c40f;
+    --oscuro: #333;
+    --blanco: #ffffff;
+    --gris-fondo: #f4f4f4;
+    --verde-wa: #25d366;
+}
+    
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color:#cccccc64;
+    color: var(--oscuro);
+    padding-top: 100px; 
+}
+
+/* --- NAVBAR FIJO --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5%;
+    background: linear-gradient(135deg, #b92b2b, #9b2727);
+    backdrop-filter: blur(10px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2000;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);}
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+
+.logo img {
+    height: 110px;
+    width: 110px;
+    position: relative;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--amarillo-paisa);
+    background-color: white;
+    filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.3));
+    transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.1);
+}
+/* --- ESTILO BASE PARA EL H1 EN LA NAVBAR --- */
+.nav-h1 {
+    font-size: 2rem; /* Bajamos el tamaño base para que no rompa el header */
+    color: #ffffff;
+    text-shadow: 2px 2px 0px rgb(0, 0, 0);
+    margin: 0;
+    font-weight: 800;
+    white-space: nowrap; /* Evita que el texto salte a dos líneas */
+}
+
+/* --- MEDIA QUERY PARA CELULARES --- */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 5px 2%;
+        flex-wrap: wrap; /* Permite que los elementos se acomoden si no caben */
+    }
+
+    /* 1. El Título: Lo hacemos pequeño o lo ocultamos si ocupa mucho espacio */
+    .nav-h1 {
+        font-size: 1.1rem; /* Tamaño pequeño para que quepa al lado del logo */
+        order: 2; /* Lo posicionamos al centro */
+        width: auto;
+        text-align: center;
+    }
+
+    /* Si ves que el título sigue estorbando mucho, usa esto para ocultarlo solo en móvil:
+    .nav-h1 { display: none; } 
+    */
+
+    /* 2. Logo y Hamburguesa */
+    .nav-left {
+        order: 1;
+    }
+
+    .logo img {
+        height: 50px;
+        width: 50px;
+    }
+
+    /* 3. Buscador: Lo mandamos abajo para que no choque con el logo y el título */
+    .nav-search {
+        order: 3;
+        width: 100%; /* Ocupa todo el ancho abajo */
+        margin-top: 10px;
+        max-width: none;
+    }
+
+    /* 4. ARREGLO DEL MENÚ (Para que aparezca al dar clic) */
+    .nav-links {
+        display: flex !important; 
+        position: fixed;
+        left: -100% !important; /* Aseguramos que empiece afuera */
+        width: 280px;
+        transition: left 0.4s ease-in-out;
+    }
+
+    /* Esta clase DEBE ser activada por JS */
+    .nav-links.active {
+        left: 0 !important;
+    }
+}
+
+/* --- CONTENEDOR IZQUIERDO (Hamburguesa + Logo) --- */
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espacio entre la hamburguesa y el logo */
+}
+
+/* --- BOTÓN HAMBURGUESA --- */
+.hamburger {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2.2rem;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.hamburger:hover {
+    transform: scale(1.1);
+    color: var(--amarillo-paisa);
+}
+
+/* --- MENÚ LATERAL (Oculto por defecto) --- */
+.nav-links {
+    display: flex !important; /* Forzamos flex para que no se oculte con display:none */
+    flex-direction: column;
+    list-style: none;
+    position: fixed;
+    top: 0;
+    left: -100%; /* Oculto a la izquierda */
+    width: 80%;  /* Ancho para móviles */
+    max-width: 300px;
+    height: 100vh;
+    background: rgba(245, 245, 220, 0.644); 
+    padding-top: 80px;
+    transition: all 0.4s ease-in-out;
+    z-index: 9999; /* El número más alto para que nada lo tape */
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.63);
+}
+
+/* ESTA ES LA CLAVE: Cuando JS añade la clase, movemos el left a 0 */
+.nav-links.active {
+    left: 0 !important;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-weight: 1000;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    display: block;
+    padding: 10px 30px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--amarillo-paisa);
+    background: rgba(0, 0, 0, 0.171);
+}
+
+/* --- BOTÓN CERRAR DENTRO DEL MENÚ --- */
+.close-btn-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+#close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#close-btn:hover {
+    color: var(--amarillo-paisa);
+}
+
+.nav-search {
+    display: flex;
+    background: white;
+    border-radius: 25px;
+    padding: 5px 15px;
+    align-items: center;
+}
+
+.nav-search input {
+    border: none;
+    padding: 8px;
+    outline: none;
+    width: 180px;
+}
+
+.nav-search button {
+    background: none;
+    border: none;
+    color: var(--rojo-paisa);
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+
+/* --- HERO / BANNER --- */
+.hero {
+    position: relative;
+    background-image: url("img/BannerMare.webp");
+    background-repeat: no-repeat;
+    background-size: cover;           
+    background-position: center 1%;  
+    padding: 60px 5%;
+    min-height: 500px;                  
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    }
+
+
+.hero-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+    max-width: 1200px;
+    margin-left: -4%;           
+    gap: 40px;
+    position: relative;
+    z-index: 2;
+}
+
+
+
+.hero-image img {
+    width: 250px;
+    height: 250px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+    animation: flotar 3s ease-in-out infinite;
+    
+}
+
+.muneca-center {
+    display: flex;
+    justify-content: center;  /* centra horizontal */
+    align-items: center;
+}
+.h3-muneca{
+    text-align: center;
+}
+.h2-muneca{
+    text-align: center;
+    color: black;
+}
+
+
+
+.hero-image img:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(15px 15px 30px rgba(0, 0, 0, 0.5));
+}
+
+@keyframes flotar {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+.hero-text {
+    flex: 1;
+    color: rgb(255, 255, 255);
+    max-width: 520px; 
+    animation: fadeUp 1s ease forwards;
+}
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.btn-whatsapp-main {
+    display: inline-block;
+    background: var(--verde-wa);
+    color: white;
+    padding: 15px 30px;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: bold;
+    margin-top: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: 0.3s;
+    font-size: 1.1rem;
+}
+.btn-whatsapp-main:hover {
+    background-color: #04a13e;
+    transform:translateY(10px);
+}
+
+/* --- SECCIÓN DESTACADOS --- */
+.catalog-container {
+    padding: 40px 5%;
+}
+
+.catalog-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-title {
+    font-size: 2rem;
+    color: var(--rojo-paisa);
+    margin-bottom: 10px;
+    
+}
+
+
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 30px;
+}
+
+.product-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border: 1px solid #eee;
+    position: relative;
+    transition: 0.4s;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--rojo-paisa);
+}
+
+.product-img-box {
+    height: 255px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #fff;
+}
+
+
+.product-img-box img {
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.product-info {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-desc {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    flex-grow: 1;
+}
+
+.price {
+    font-size: 1.2rem;
+    color: var(--rojo-paisa);
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.btn-card-wa {
+    display: block;
+    background: var(--rojo-paisa);
+    color: white;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 700;
+    margin-top: auto;
+}
+.btn-card-wa:hover {
+    background-color: rgb(195, 73, 73);
+}
+
+
+.separator {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #ccc, transparent);
+    margin: 40px 5%;
+}
+
+/* --- Quienes Somos ---*/
+.about-section {
+    padding: 80px 5%;
+    background: #f5efe6;
+    text-align: center;
+}
+
+.about-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.titulo-quienes {
+    font-size: 2.3rem;
+    color: black;
+    margin-bottom: 20px;
+}
+
+.about-section p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.7;
+}
+.p-asesoria{
+     font-weight: 500;
+     color: black;
+}
+
+
+/* --- ESTILOS DE LA PALETA DE COLORES --- */
+.color-palette {
+    display: flex;
+    justify-content: flex-start; /* Alineados a la izquierda como el texto */
+    gap: 8px;
+    margin: 10px 0 5px; /* Espacio arriba y abajo */
+    min-height: 24px;
+}
+
+.color-circle {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.15); /* Borde sutil para colores claros */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, border-color 0.2s;
+}
+
+.color-circle:hover {
+    transform: scale(1.2);
+    border: 2px solid var(--rojo-paisa);
+}
+
+/* --- CATÁLOGO DINÁMICO --- */
+.full-catalog {
+    padding: 60px 5% 80px;
+}
+
+.category-chips {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0 40px;
+    flex-wrap: wrap;
+}
+
+.chip {
+    padding: 8px 20px;
+    background: white;
+    border: 2px solid var(--rojo-paisa);
+    color: black;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.chip.active, .chip:hover {
+    background: var(--rojo-paisa);
+    color: white;
+}
+
+.product-grid-mini {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.card-mini {
+    background: rgb(255, 254, 254);
+    justify-content: space-between;
+    text-align: center;
+    border-radius: 20px;
+    padding: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: fadeIn 0.5s ease;
+    content-visibility: auto;
+    contain-intrinsic-size: 400px;
+}
+
+.card-mini::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--rojo-paisa);
+}
+
+.card-mini:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 40px rgba(139, 29, 29, 0.15);
+    border-color: var(--rojo-paisa);
+}
+
+.card-mini img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.1));
+    transition: 0.3s;
+}
+
+.card-mini:hover img {
+    transform: scale(1.05);
+}
+
+.card-mini h4 {
+    font-size: 1.1rem;
+    color: var(--oscuro);
+    margin-bottom: 5px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.descripcion-mini {
+    font-size: 0.95rem;
+    color: #555;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.btn-mini-wa {
+    background: var(--rojo-paisa);
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: auto;
+    transition: background 0.3s;
+}
+.btn-mini-wa:hover {
+    background-color: rgb(180, 50, 50);
+}
+
+/* --- WHATSAPP FLOTANTE --- */
+.whatsapp-float {
+    position: fixed;
+    bottom: 30px;
+    right: 17px;
+    width: 60px;
+    height: 60px;
+    background-color: #25d366; 
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3), inset 0 0 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    animation: latido 2s infinite;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgb(42, 246, 117);
+    animation-play-state: paused;
+}
+
+.whatsapp-float img {
+    width: 75px; 
+    height: 75px;
+    object-fit: contain;
+    display: block;
+    filter: brightness(1.5) contrast(1.2) drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    position: relative;
+    z-index: 3001; 
+}
+/* --- CONTACTO --- */
+.contact-section {
+    background: #cccccc2d;
+    padding: 80px 5%;
+    border: 1px solid #000000;
+}
+
+.contact-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.contact-left h2 {
+    font-size: 2.4rem;
+    color: var(--rojo-paisa);
+    margin-bottom: 15px;
+}
+.h4-contacto{
+    font-size: 1.5rem;
+    margin: 30px;
+}
+
+.contact-left p {
+    font-size: 1.05rem;
+    color: #555;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.contact-wa-btn {
+    display: inline-block;
+    background: var(--verde-wa);
+    color: white;
+    padding: 16px 32px;
+    border-radius: 40px;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.contact-wa-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.45);
+}
+
+.contact-right {
+    background: #f9f9f957;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid #000000;
+}
+
+.contact-right h3 {
+    font-size: 1.4rem;
+    color: var(--rojo-paisa);
+    margin-bottom: 20px;
+}
+
+.contact-right p {
+    margin-bottom: 15px;
+    color: #444;
+    line-height: 1.5;
+}
+
+@keyframes latido {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===============================
+   RESPONSIVE DESIGN COMPLETO
+================================= */
+
+/* 🖥️ Pantallas muy grandes */
+@media (min-width: 1400px) {
+    .hero {
+        min-height: 600px;
+    }
+
+    .hero-text h1 {
+        font-size: 3.8rem;
+    }
+
+    .product-grid-mini {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* 💻 Laptop */
+@media (max-width: 1200px) {
+    .product-grid-mini {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .hero-text h1 {
+        font-size: 2.8rem;
+    }
+}
+
+/* 💻 Tablet */
+@media (max-width: 1024px) {
+
+    .navbar {
+        padding: 10px 3%;
+    }
+
+    .nav-right {
+        gap: 20px;
+    }
+
+    .hero-container {
+        gap: 20px;
+    }
+
+    .hero-text h1 {
+        font-size: 2.5rem;
+    }
+
+    .product-grid-mini {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .contact-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .contact-right {
+        text-align: left;
+        margin-top: 30px;
+    }
+}
+
+/* 📱 Móvil grande */
+@media (max-width: 768px) {
+
+    body {
+        padding-top: 80px;
+    }
+
+    .navbar {
+        flex-wrap: wrap;
+    }
+
+    .logo img {
+        height: 80px;
+        width: 80px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .nav-search input {
+        width: 120px;
+    }
+
+    .hero {
+        padding: 40px 5%;
+        min-height: 280px;
+        background-position: center 25%;
+    }
+
+    .hero-container {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 0;
+        gap: 20px;
+    }
+
+    .hero-image img {
+        width: 160px;
+        animation: none;
+    }
+
+    .hero-text {
+        max-width: 100%;
+    }
+
+    .hero-text h1 {
+        font-size: 2rem;
+        line-height: 1.2;
+    }
+
+    .btn-whatsapp-main {
+        width: 100%;
+        text-align: center;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-grid-mini {
+        grid-template-columns: 1fr;
+    }
+    
+}
+
+/* 📱 Móvil pequeño */
+@media (max-width: 480px) {
+
+    .hero-text h1 {
+        font-size: 1.8rem;
+    }
+
+    .nav-search {
+        display: none;
+    }
+
+    .whatsapp-float {
+        width: 50px;
+        height: 50px;
+    }
+
+    .whatsapp-float img {
+        width: 55px;
+        height: 55px;
+    }
+}
+
+/* ==========================================================================
+   AJUSTES RESPONSIVE (MÓVILES Y TABLETS)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    /* 1. Reducimos el padding de la navbar para ganar espacio */
+    .navbar {
+        padding: 5px 3%;
+        justify-content: space-between;
+    }
+
+    /* 2. Hacemos el logo más pequeño en el celular */
+    .logo img {
+        height: 60px;   /* Mucho más manejable en móvil */
+        width: 60px;
+        border-width: 1px;
+    }
+
+    /* 3. Ajustamos el buscador para que no ocupe tanto espacio */
+    .nav-search {
+        padding: 5px 10px;
+        max-width: 150px; /* Limitamos el ancho para que quepa todo */
+    }
+
+    .nav-search input {
+        width: 100%;    /* Que use el espacio del contenedor */
+        font-size: 0.8rem; /* Letra un poco más pequeña */
+        padding: 5px;
+    }
+
+    /* 4. Aseguramos que el menú lateral cubra más pantalla en móvil */
+    .nav-links {
+        width: 80%; /* Ocupa casi todo el ancho para que sea fácil tocar */
+    }
+
+    .nav-links a {
+        font-size: 1.5rem; /* Enlaces más grandes para dedos */
+        padding: 20px 30px;
+    }
+    
+    /* 5. Ajuste del botón hamburguesa */
+    .hamburger {
+        font-size: 1.8rem;
+    }
+}
+
+/* Ajuste extra para celulares muy pequeños (iPhone SE, etc) */
+@media (max-width: 400px) {
+    .nav-search {
+        display: none; /* Opcional: Ocultar buscador en pantallas mini para priorizar logo */
+    }
+    
+    /* Si decides no ocultarlo, baja aún más el tamaño del logo */
+    .logo img {
+        height: 50px;
+        width: 50px;
+    }
+}
